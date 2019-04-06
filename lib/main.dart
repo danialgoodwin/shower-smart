@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:speech_recognition/speech_recognition.dart';
+import 'package:shower_smart/user_settings.dart';
+//import 'package:speech_recognition/speech_recognition.dart';
+
+UserSettings _userSettings = UserSettings();
 
 void main() => runApp(MyApp());
 
@@ -116,6 +119,7 @@ class _StartStopButtonState extends State<StartStopButton> {
   }
 
   Future _speak(String message) async {
+    if (message.isEmpty) { return; }
     var result = await flutterTts.speak(message);
 //    if (result == 1) setState(() => ttsState = TtsState.playing);
   }
@@ -125,10 +129,14 @@ class _StartStopButtonState extends State<StartStopButton> {
     var currentSeconds = _stopwatch.elapsed.inSeconds % 60;
     if (_lastAnnouncedMinute != currentMinutes) {
       _lastAnnouncedMinute = currentMinutes;
+      String waterUsedText = '';
+      if (_userSettings.gallonsPerMinute() != 0) {
+        waterUsedText = 'You\'ve used ${(_userSettings.gallonsPerMinute() * currentMinutes).toInt()} gallons of water';
+      }
       if (currentSeconds == 0) {
-        _speak('It\'s been $currentMinutes minutes');
+        _speak('It\'s been $currentMinutes minutes. $waterUsedText');
       } else {
-        _speak('It\'s been $currentMinutes minutes and $currentSeconds seconds');
+        _speak('It\'s been $currentMinutes minutes and $currentSeconds seconds. $waterUsedText');
       }
     }
     setState(() {
