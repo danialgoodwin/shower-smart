@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_recognition/speech_recognition.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -68,6 +71,8 @@ class StartStopButton extends StatefulWidget {
 }
 
 class _StartStopButtonState extends State<StartStopButton> {
+  FlutterTts flutterTts = FlutterTts();
+  int _lastAnnouncedMinute = 0;
   Timer _timer;
   Stopwatch _stopwatch = Stopwatch();
   Icon _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
@@ -103,15 +108,29 @@ class _StartStopButtonState extends State<StartStopButton> {
   void reset() {
     _stopwatch.reset();
     _stop();
+    _lastAnnouncedMinute = 0;
   }
 
   void _toggleStartStop() {
     _stopwatch.isRunning ? _stop() : _start();
   }
 
+  Future _speak(String message) async {
+    var result = await flutterTts.speak(message);
+//    if (result == 1) setState(() => ttsState = TtsState.playing);
+  }
+
   void _updateTimeShown() {
     var currentMinutes = _stopwatch.elapsed.inMinutes;
     var currentSeconds = _stopwatch.elapsed.inSeconds % 60;
+    if (_lastAnnouncedMinute != currentMinutes) {
+      _lastAnnouncedMinute = currentMinutes;
+      if (currentSeconds == 0) {
+        _speak('It\'s been $currentMinutes minutes');
+      } else {
+        _speak('It\'s been $currentMinutes minutes and $currentSeconds seconds');
+      }
+    }
     setState(() {
       _timeText = '${currentMinutes.toString().padLeft(2, "0")}:${currentSeconds.toString().padLeft(2, "0")}';
     });

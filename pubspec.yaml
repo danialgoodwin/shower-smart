@@ -17,12 +17,14 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  # More info: https://pub.dartlang.org/packages/flutter_tts
+  flutter_tts: ^0.2.4
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # Usage: `CupertinoIcons.*`
   cupertino_icons: ^0.1.2
+  # More info: https://pub.dartlang.org/packages/speech_recognition
+#  speech_recognition: "^0.3.0"
 
 dev_dependencies:
   flutter_test:
