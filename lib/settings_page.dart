@@ -44,19 +44,21 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text('$_volumeUnits'),
             onTap: _showVolumeUnitsInputPrompt,
           ),
-//        ListTile.divideTiles(tiles: ''), // TODO: Use?
-//        Divider(), // TODO: Use?
-          ListTile(
-            title: const Text('About app'),
-            onTap: _showAboutApp,
+          Divider(),
+          const AboutListTile(
+            icon: null,
+            aboutBoxChildren: <Widget>[
+              Text('Save water. Save the world. Free up time for other things.'
+                  '\n\nEvery minute, this app will announce how long you\'ve been'
+                  ' running the water, and how much water you\'ve used. Use this'
+                  ' as motivation for taking shorter showers and using less water.'),
+            ],
+//            title: const Text('About app'),
+//            onTap: _showAboutApp,
           )
         ],
       ),
     );
-  }
-
-  void _showAboutApp() {
-    // TODO
   }
 
   void _showVolumePerMinuteInputPrompt() {
