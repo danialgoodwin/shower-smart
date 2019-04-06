@@ -80,6 +80,7 @@ class _StartStopButtonState extends State<StartStopButton> {
   Stopwatch _stopwatch = Stopwatch();
   Icon _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
   String _timeText = '00:00';
+  String _waterUsageText = '0 ${_userSettings.volumeUnits()}';
 
   @override
   void initState() {
@@ -127,11 +128,12 @@ class _StartStopButtonState extends State<StartStopButton> {
   void _updateTimeShown() {
     var currentMinutes = _stopwatch.elapsed.inMinutes;
     var currentSeconds = _stopwatch.elapsed.inSeconds % 60;
+    var waterUsed = _userSettings.volumePerMinute() * _stopwatch.elapsed.inSeconds ~/ 6 / 10;
     if (_lastAnnouncedMinute != currentMinutes) {
       _lastAnnouncedMinute = currentMinutes;
       String waterUsedText = '';
-      if (_userSettings.gallonsPerMinute() != 0) {
-        waterUsedText = 'You\'ve used ${(_userSettings.gallonsPerMinute() * currentMinutes).toInt()} gallons of water';
+      if (_userSettings.volumePerMinute() != 0) {
+        waterUsedText = 'You\'ve used ${waterUsed.toInt()} ${_userSettings.volumeUnits()} of water';
       }
       if (currentSeconds == 0) {
         _speak('It\'s been $currentMinutes minutes. $waterUsedText');
@@ -141,6 +143,7 @@ class _StartStopButtonState extends State<StartStopButton> {
     }
     setState(() {
       _timeText = '${currentMinutes.toString().padLeft(2, "0")}:${currentSeconds.toString().padLeft(2, "0")}';
+      _waterUsageText = '$waterUsed ${_userSettings.volumeUnits()}';
     });
   }
 
@@ -155,6 +158,7 @@ class _StartStopButtonState extends State<StartStopButton> {
           onPressed: _toggleStartStop,
         ),
         Text(_timeText),
+        Text(_waterUsageText)
       ],
     );
 
