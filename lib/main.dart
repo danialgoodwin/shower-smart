@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -26,12 +28,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<_StartStopButtonState> _startStopButtonStateKey = GlobalKey();
-//  Stopwatch _stopwatch = Stopwatch();
 
   void _resetTimer() {
     setState(() {
-      _startStopButtonStateKey.currentState.stop();
-//      _stopwatch.reset();
+      _startStopButtonStateKey.currentState.reset();
     });
   }
 
@@ -45,11 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            StartStopButton(key: _startStopButtonStateKey),
-            MaterialButton(
+            Expanded(
+              child: StartStopButton(key: _startStopButtonStateKey),
+            ),
+            RaisedButton(
               child: Text('Reset'),
               shape: StadiumBorder(),
-              onPressed: () { _resetTimer(); },
+              onPressed: _resetTimer,
             ),
           ],
         ),
@@ -66,35 +68,71 @@ class StartStopButton extends StatefulWidget {
 }
 
 class _StartStopButtonState extends State<StartStopButton> {
-  bool _isStarted = false;
+  Timer _timer;
+  Stopwatch _stopwatch = Stopwatch();
   Icon _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
+  String _timeText = '00:00';
 
-  void stop() {
-    if (_isStarted) _toggleStartStop();
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _updateTimeShown());
+  }
+
+  @override
+  void dispose() {
+    _stopwatch.stop();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _start() {
+    _stopwatch.start();
+    setState(() {
+      _icon = Icon(Icons.pause, color: Colors.blue, size: 200);
+    });
+  }
+
+  void _stop() {
+    _stopwatch.stop();
+    setState(() {
+      _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
+    });
+  }
+
+  void reset() {
+    _stopwatch.reset();
+    _stop();
   }
 
   void _toggleStartStop() {
+    _stopwatch.isRunning ? _stop() : _start();
+  }
+
+  void _updateTimeShown() {
+    var currentMinutes = _stopwatch.elapsed.inMinutes;
+    var currentSeconds = _stopwatch.elapsed.inSeconds % 60;
     setState(() {
-      _isStarted = !_isStarted;
-      if (_isStarted) {
-        _icon = Icon(Icons.pause, color: Colors.blue, size: 200);
-      } else {
-        _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
-      }
+      _timeText = '${currentMinutes.toString().padLeft(2, "0")}:${currentSeconds.toString().padLeft(2, "0")}';
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: _icon,
-      shape: CircleBorder(),
-//      tooltip: 'Start stop button',
-//      iconSize: 150,
-      onPressed: () {
-        _toggleStartStop();
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RawMaterialButton(
+          child: _icon,
+          shape: CircleBorder(),
+          onPressed: _toggleStartStop,
+        ),
+        Text(_timeText),
+      ],
     );
+
+
+
   }
 
 }
