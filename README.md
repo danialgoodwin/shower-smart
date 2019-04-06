@@ -1,16 +1,21 @@
-# shower_smart
+# Shower Smart
+
 
 Shower smart. Water-wise.
 
-## Getting Started
+Save water. Save the world. Free up time for other things.
 
-This project is a starting point for a Flutter application.
+Features:
+- Start/stop button
+- Take off 30 (variable) seconds when pressing stop (gives time to dry hand)
+- Announce every # minutes the elapsed time and water used (configurable)
 
-A few resources to get you started if this is your first Flutter project:
+TODO:
+- Input gallons/minute, starting with a default
+- Change units between gallons/minute and liters/minute
+- History graph
+- Save to cloud
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## History
+First commit: 2019-04-06
