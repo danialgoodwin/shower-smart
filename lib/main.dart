@@ -25,11 +25,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  GlobalKey<_StartStopButtonState> _startStopButtonStateKey = GlobalKey();
+//  Stopwatch _stopwatch = Stopwatch();
 
-  void _incrementCounter() {
+  void _resetTimer() {
     setState(() {
-      _counter++;
+      _startStopButtonStateKey.currentState.stop();
+//      _stopwatch.reset();
     });
   }
 
@@ -43,48 +45,52 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            StartStopButton(),
+            StartStopButton(key: _startStopButtonStateKey),
+            MaterialButton(
+              child: Text('Reset'),
+              shape: StadiumBorder(),
+              onPressed: () { _resetTimer(); },
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
 class StartStopButton extends StatefulWidget {
+  StartStopButton({Key key}): super(key: key);
+
   @override
   _StartStopButtonState createState() => _StartStopButtonState();
 }
 
 class _StartStopButtonState extends State<StartStopButton> {
   bool _isStarted = false;
-  String _text = "Start";
-  Icon _icon = Icon(Icons.play_arrow, color: Colors.blue);
+  Icon _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
+
+  void stop() {
+    if (_isStarted) _toggleStartStop();
+  }
 
   void _toggleStartStop() {
     setState(() {
       _isStarted = !_isStarted;
       if (_isStarted) {
-        _icon = Icon(Icons.pause, color: Colors.blue);
-        _text = "Stop";
+        _icon = Icon(Icons.pause, color: Colors.blue, size: 200);
       } else {
-        _icon = Icon(Icons.play_arrow, color: Colors.blue);
-        _text = "Start";
+        _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: _icon,
-      tooltip: 'Start stop button',
-      iconSize: 150,
+    return RawMaterialButton(
+      child: _icon,
+      shape: CircleBorder(),
+//      tooltip: 'Start stop button',
+//      iconSize: 150,
       onPressed: () {
         _toggleStartStop();
       },
