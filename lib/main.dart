@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:shower_smart/settings_page.dart';
 import 'package:shower_smart/user_settings.dart';
 //import 'package:speech_recognition/speech_recognition.dart';
 
@@ -24,12 +25,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  final String title;
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+  @override _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -65,11 +64,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _navigateToSettings(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => SettingsPage(),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+            onPressed: () { _navigateToSettings(context); },
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -84,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _configureWaterUsageSettings,
             ),
             RaisedButton(
-              child: Text('Reset'),
+              child: const Text('Reset'),
               shape: StadiumBorder(),
               onPressed: _resetTimer,
             ),
@@ -116,7 +129,7 @@ class _StartStopButtonState extends State<StartStopButton> {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _updateTimeShown());
     _userSettings.getVolumeUnits().then((String volumeUnits) {
-      _waterUsageText = volumeUnits;
+      _waterUsageText = '0 $volumeUnits';
     });
   }
 
