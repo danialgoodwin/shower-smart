@@ -34,6 +34,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<_StartStopButtonState> _startStopButtonStateKey = GlobalKey();
+  double _volumePerMinute;
+  String _volumeUnits;
+
+  @override
+  void initState() {
+    super.initState();
+    _userSettings.getVolumePerMinute().then((double volumePerMinute) {
+      setState(() {
+        _volumePerMinute = volumePerMinute;
+      });
+    });
+    _userSettings.getVolumeUnits().then((String volumeUnits) {
+      setState(() {
+        _volumeUnits = volumeUnits;
+      });
+    });
+  }
+
+  void _configureWaterUsageSettings() {
+    setState(() {
+      // TODO: Show prompt
+//      _userSettings.
+    });
+  }
 
   void _resetTimer() {
     setState(() {
@@ -53,6 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Expanded(
               child: StartStopButton(key: _startStopButtonStateKey),
+            ),
+            RaisedButton(
+              child: Text('$_volumePerMinute $_volumeUnits per minute'),
+              shape: StadiumBorder(),
+              onPressed: _configureWaterUsageSettings,
             ),
             RaisedButton(
               child: Text('Reset'),
@@ -80,12 +109,15 @@ class _StartStopButtonState extends State<StartStopButton> {
   Stopwatch _stopwatch = Stopwatch();
   Icon _icon = Icon(Icons.play_arrow, color: Colors.blue, size: 200);
   String _timeText = '00:00';
-  String _waterUsageText = '0 ${_userSettings.volumeUnits()}';
+  String _waterUsageText = '';
 
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _updateTimeShown());
+    _userSettings.getVolumeUnits().then((String volumeUnits) {
+      _waterUsageText = volumeUnits;
+    });
   }
 
   @override
@@ -125,15 +157,19 @@ class _StartStopButtonState extends State<StartStopButton> {
 //    if (result == 1) setState(() => ttsState = TtsState.playing);
   }
 
-  void _updateTimeShown() {
+  void _updateTimeShown() async {
     var currentMinutes = _stopwatch.elapsed.inMinutes;
     var currentSeconds = _stopwatch.elapsed.inSeconds % 60;
-    var waterUsed = _userSettings.volumePerMinute() * _stopwatch.elapsed.inSeconds ~/ 6 / 10;
+
+    double volumePerMinute = await _userSettings.getVolumePerMinute();
+    String volumeUnits = await _userSettings.getVolumeUnits();
+
+    var waterUsed = volumePerMinute * _stopwatch.elapsed.inSeconds ~/ 6 / 10;
     if (_lastAnnouncedMinute != currentMinutes) {
       _lastAnnouncedMinute = currentMinutes;
       String waterUsedText = '';
-      if (_userSettings.volumePerMinute() != 0) {
-        waterUsedText = 'You\'ve used ${waterUsed.toInt()} ${_userSettings.volumeUnits()} of water';
+      if (volumePerMinute != 0) {
+        waterUsedText = 'You\'ve used ${waterUsed.toInt()} $volumeUnits of water';
       }
       if (currentSeconds == 0) {
         _speak('It\'s been $currentMinutes minutes. $waterUsedText');
@@ -143,7 +179,7 @@ class _StartStopButtonState extends State<StartStopButton> {
     }
     setState(() {
       _timeText = '${currentMinutes.toString().padLeft(2, "0")}:${currentSeconds.toString().padLeft(2, "0")}';
-      _waterUsageText = '$waterUsed ${_userSettings.volumeUnits()}';
+      _waterUsageText = '$waterUsed $volumeUnits';
     });
   }
 

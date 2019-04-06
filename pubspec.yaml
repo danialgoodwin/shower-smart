@@ -16,13 +16,13 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
+# Find more information about these dependencies: https://pub.dartlang.org/packages/
 dependencies:
-  # More info: https://pub.dartlang.org/packages/flutter_tts
+  cupertino_icons: ^0.1.2
   flutter_tts: ^0.2.4
   flutter:
     sdk: flutter
-  # Usage: `CupertinoIcons.*`
-  cupertino_icons: ^0.1.2
+  shared_preferences: ^0.5.1+2
   # More info: https://pub.dartlang.org/packages/speech_recognition
 #  speech_recognition: "^0.3.0"
 

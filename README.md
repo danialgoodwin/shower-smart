@@ -12,6 +12,7 @@ Features:
 - [ ] History graph
 - [ ] Save to cloud
 - [ ] Voice-activated stopping
+- [ ] Keep screen or voice on when running
 - [ ] Settings page:
   - [ ] Configure gallons/minute
 - [ ] Tips for saving water:
