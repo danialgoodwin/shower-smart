@@ -37,45 +37,40 @@ class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderSt
         title: const Text("Settings"),
         elevation: 0,
       ),
-      body: Stack(
-        children: <Widget>[
-          ListView(
-            children: <Widget>[
-              ListTile(
-                title: const Text('Volume per minute'),
-                subtitle: Text('$_volumePerMinute'),
-                onTap: () {
-                  _showVolumePerMinuteInputPrompt(context);
-                },
-              ),
-              ListTile(
-                title: const Text('Volume units'),
-                subtitle: Text('$_volumeUnits'),
-                onTap: () {
-                  _showVolumeUnitsInputPrompt(context);
-                },
-              ),
-              Divider(),
-              const AboutListTile(
-                icon: null,
-                aboutBoxChildren: <Widget>[
-                  Text('Save water. Save the world. Free up time for other things.'
-                      '\n\nEvery minute, this app will announce how long you\'ve been'
-                      ' running the water, and how much water you\'ve used. Use this'
-                      ' as motivation for taking shorter showers and using less water.'),
-                ],
+      body: AnimatedBackground(
+        behaviour: RainParticleBehaviour(),
+        vsync: this,
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: const Text('Volume per minute'),
+              subtitle: Text('$_volumePerMinute'),
+              onTap: () {
+                _showVolumePerMinuteInputPrompt(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Volume units'),
+              subtitle: Text('$_volumeUnits'),
+              onTap: () {
+                _showVolumeUnitsInputPrompt(context);
+              },
+            ),
+            Divider(),
+            const AboutListTile(
+              icon: null,
+              aboutBoxChildren: <Widget>[
+                Text('Save water. Save the world. Free up time for other things.'
+                    '\n\nEvery minute, this app will announce how long you\'ve been'
+                    ' running the water, and how much water you\'ve used. Use this'
+                    ' as motivation for taking shorter showers and using less water.'),
+              ],
 //            title: const Text('About app'),
 //            onTap: _showAboutApp,
-              )
-            ],
-          ),
-          AnimatedBackground(
-            behaviour: RainParticleBehaviour(),
-            vsync: this,
-            child: Text('Hello'),
-          )
-        ],
-      )
+            )
+          ],
+        ),
+      ),
     );
   }
 

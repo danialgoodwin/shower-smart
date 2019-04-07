@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shower_smart/settings_page.dart';
+import 'package:shower_smart/third_party/rain_particle_behavior.dart';
 import 'package:shower_smart/user_settings.dart';
 //import 'package:speech_recognition/speech_recognition.dart';
 
@@ -31,8 +33,9 @@ class MyHomePage extends StatefulWidget {
   @override _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   GlobalKey<_StartStopButtonState> _startStopButtonStateKey = GlobalKey();
+  bool _isRainParticlesEnabled = true; // TODO
   double _volumePerMinute;
   String _volumeUnits;
 
@@ -77,21 +80,27 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: StartStopButton(key: _startStopButtonStateKey),
-            ),
-            RaisedButton(
-              child: const Text('Reset'),
-              shape: StadiumBorder(),
-              onPressed: _resetTimer,
-            ),
-          ],
+      body: AnimatedBackground(
+        behaviour: RainParticleBehaviour(
+          enabled: _isRainParticlesEnabled,
         ),
-      ),
+        vsync: this,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: StartStopButton(key: _startStopButtonStateKey),
+              ),
+              RaisedButton(
+                child: const Text('Reset'),
+                shape: StadiumBorder(),
+                onPressed: _resetTimer,
+              ),
+            ],
+          ),
+        ),
+      )
     );
   }
 }
