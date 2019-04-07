@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shower_smart/reuse_widget/input_dialogs.dart';
 import 'package:shower_smart/third_party/rain_particle_behavior.dart';
 import 'package:shower_smart/user_settings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -64,9 +65,17 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                     ' running the water, and how much water you\'ve used. Use this'
                     ' as motivation for taking shorter showers and using less water.'),
               ],
-//            title: const Text('About app'),
-//            onTap: _showAboutApp,
-            )
+            ),
+            ListTile(
+              title: const Text('Learn more'),
+              subtitle: const Text('water.usgs.gov/edu/qa-home-percapita.html'),
+              onTap: () { _showWebsite('https://water.usgs.gov/edu/qa-home-percapita.html'); }
+            ),
+            ListTile(
+              title: const Text('Learn more'),
+              subtitle: const Text('epa.gov/watersense'),
+              onTap: () { _showWebsite('https://www.epa.gov/watersense'); }
+            ),
           ],
         ),
       ),
@@ -111,4 +120,13 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           });
       });
   }
+
+  void _showWebsite(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 }

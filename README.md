@@ -17,15 +17,14 @@ Features:
 - [ ] Take off 30 (variable) seconds when pressing stop (gives time to dry hand)
 - [ ] Voice-activated stopping
 - [ ] Keep screen or voice on when running
-- [ ] Tips for saving water:
+- [x] Tips for saving water:
   - https://water.usgs.gov/edu/qa-home-percapita.html
-  - https://water.usgs.gov/edu/activity-percapita.html
-  - http://www.bu.edu/sustainability/what-you-can-do/ten-sustainable-actions/take-shorter-showers/
+  - https://www.epa.gov/watersense
 - [x] The app silently judges you
 
 TODOv2:
 - [ ] History graph
-- [ ] Save to cloud
+- [ ] Save to cloud (Firebase)
 
 # Running
 Note: This app has only been tested on Android, though no platform-specific code is used.

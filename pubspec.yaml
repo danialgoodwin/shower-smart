@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^0.5.1+2
   # More info: https://pub.dartlang.org/packages/speech_recognition
 #  speech_recognition: "^0.3.0"
+  url_launcher: ^5.0.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0
