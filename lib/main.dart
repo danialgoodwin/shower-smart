@@ -92,11 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: StartStopButton(key: _startStopButtonStateKey),
             ),
             RaisedButton(
-              child: Text('$_volumePerMinute $_volumeUnits per minute'),
-              shape: StadiumBorder(),
-              onPressed: _configureWaterUsageSettings,
-            ),
-            RaisedButton(
               child: const Text('Reset'),
               shape: StadiumBorder(),
               onPressed: _resetTimer,

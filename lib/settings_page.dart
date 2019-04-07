@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:shower_smart/reuse_widget/input_dialogs.dart';
 import 'package:shower_smart/user_settings.dart';
 
 class SettingsPage extends StatefulWidget {
-  @override _SettingsPageState createState() => _SettingsPageState();
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // TODO: Fix UserSettings with singleton/ViewModel
+  UserSettings _settings = UserSettings();
   double _volumePerMinute;
   String _volumeUnits;
 
   @override
   void initState() {
     super.initState();
-    UserSettings _userSettings = UserSettings();
-    _userSettings.getVolumePerMinute().then((double volumePerMinute) {
+    _settings.getVolumePerMinute().then((double volumePerMinute) {
       setState(() {
         _volumePerMinute = volumePerMinute;
       });
     });
-    _userSettings.getVolumeUnits().then((String volumeUnits) {
+    _settings.getVolumeUnits().then((String volumeUnits) {
       setState(() {
         _volumeUnits = volumeUnits;
       });
@@ -37,12 +40,16 @@ class _SettingsPageState extends State<SettingsPage> {
           ListTile(
             title: const Text('Volume per minute'),
             subtitle: Text('$_volumePerMinute'),
-            onTap: _showVolumePerMinuteInputPrompt,
+            onTap: () {
+              _showVolumePerMinuteInputPrompt(context);
+            },
           ),
           ListTile(
             title: const Text('Volume units'),
             subtitle: Text('$_volumeUnits'),
-            onTap: _showVolumeUnitsInputPrompt,
+            onTap: () {
+              _showVolumeUnitsInputPrompt(context);
+            },
           ),
           Divider(),
           const AboutListTile(
@@ -61,12 +68,42 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _showVolumePerMinuteInputPrompt() {
-    // TODO
+  void _showVolumePerMinuteInputPrompt(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return InputDialogs.newTextInputDialog(
+          context: context,
+          title: 'Volume per minute',
+          initialValue: _volumePerMinute.toString(),
+          hint: 'Ex: 2.5',
+          onSubmitted: (String text) async {
+            bool isValid = double.tryParse(text) != null;
+            if (isValid) {
+              double newVpm = await _settings.setVolumePerMinute(double.tryParse(text));
+              setState(() {
+                _volumePerMinute = newVpm;
+              });
+            }
+          });
+      });
   }
 
-  void _showVolumeUnitsInputPrompt() {
-    // TODO
+  void _showVolumeUnitsInputPrompt(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return InputDialogs.newTextInputDialog(
+          context: context,
+          title: 'Volume units',
+          initialValue: _volumeUnits,
+          hint: 'Ex: gallons, liters',
+          onSubmitted: (String text) async {
+            String newVolumeUnits = await _settings.setVolumeUnits(text);
+            setState(() {
+              _volumeUnits = newVolumeUnits;
+            });
+          });
+      });
   }
-
 }
