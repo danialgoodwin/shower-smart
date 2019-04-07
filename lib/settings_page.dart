@@ -9,8 +9,7 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderStateMixin {
-  // TODO: Fix UserSettings with singleton/ViewModel
+class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin {
   UserSettings _settings = UserSettings();
   double _volumePerMinute;
   String _volumeUnits;

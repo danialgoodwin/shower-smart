@@ -33,26 +33,8 @@ class MyHomePage extends StatefulWidget {
   @override _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   GlobalKey<_StartStopButtonState> _startStopButtonStateKey = GlobalKey();
-  bool _isRainParticlesEnabled = true; // TODO
-  double _volumePerMinute;
-  String _volumeUnits;
-
-  @override
-  void initState() {
-    super.initState();
-    _userSettings.getVolumePerMinute().then((double volumePerMinute) {
-      setState(() {
-        _volumePerMinute = volumePerMinute;
-      });
-    });
-    _userSettings.getVolumeUnits().then((String volumeUnits) {
-      setState(() {
-        _volumeUnits = volumeUnits;
-      });
-    });
-  }
 
   void _resetTimer() {
     setState(() {
@@ -81,9 +63,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         ],
       ),
       body: AnimatedBackground(
-        behaviour: RainParticleBehaviour(
-          enabled: _isRainParticlesEnabled,
-        ),
+        behaviour: RainParticleBehaviour(),
         vsync: this,
         child: Center(
           child: Column(
@@ -207,9 +187,6 @@ class _StartStopButtonState extends State<StartStopButton> {
         Text(_waterUsageText)
       ],
     );
-
-
-
   }
 
 }

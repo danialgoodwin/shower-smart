@@ -13,6 +13,7 @@ Features:
 - [x] Settings page:
   - [x] Configure volume/minute
   - [x] Configure volume units
+- [x] 'Rain' animation
 - [ ] Take off 30 (variable) seconds when pressing stop (gives time to dry hand)
 - [ ] Voice-activated stopping
 - [ ] Keep screen or voice on when running
