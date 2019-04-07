@@ -13,7 +13,11 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
   bool enabled;
 
   RainParticleBehaviour({
-    ParticleOptions options = const ParticleOptions(),
+    ParticleOptions options = const ParticleOptions(
+      baseColor: Colors.blue,
+      spawnMaxRadius: 3,
+      spawnMaxSpeed: 300,
+    ),
     Paint paint,
     this.enabled = true,
   }) : assert(options != null),
@@ -30,7 +34,7 @@ class RainParticleBehaviour extends RandomParticleBehaviour {
 
   @override
   void initDirection(Particle p, double speed) {
-    double dirX = (random.nextDouble() - 0.5);
+    double dirX = random.nextDouble() / 10 - (0.5 / 10);
     double dirY = random.nextDouble() * 0.5 + 0.5;
     double magSq = dirX * dirX + dirY * dirY;
     double mag = magSq <= 0 ? 1 : math.sqrt(magSq);
