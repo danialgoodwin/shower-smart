@@ -51,13 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _configureWaterUsageSettings() {
-    setState(() {
-      // TODO: Show prompt
-//      _userSettings.
-    });
-  }
-
   void _resetTimer() {
     setState(() {
       _startStopButtonStateKey.currentState.reset();

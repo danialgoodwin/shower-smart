@@ -18,6 +18,7 @@ environment:
 
 # Find more information about these dependencies: https://pub.dartlang.org/packages/
 dependencies:
+  animated_background: ^1.0.1
   cupertino_icons: ^0.1.2
   flutter_tts: ^0.2.4
   flutter:

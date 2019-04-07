@@ -1,5 +1,7 @@
+import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:shower_smart/reuse_widget/input_dialogs.dart';
+import 'package:shower_smart/third_party/rain_particle_behavior.dart';
 import 'package:shower_smart/user_settings.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -7,7 +9,7 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with SingleTickerProviderStateMixin {
   // TODO: Fix UserSettings with singleton/ViewModel
   UserSettings _settings = UserSettings();
   double _volumePerMinute;
@@ -35,36 +37,45 @@ class _SettingsPageState extends State<SettingsPage> {
         title: const Text("Settings"),
         elevation: 0,
       ),
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          ListTile(
-            title: const Text('Volume per minute'),
-            subtitle: Text('$_volumePerMinute'),
-            onTap: () {
-              _showVolumePerMinuteInputPrompt(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Volume units'),
-            subtitle: Text('$_volumeUnits'),
-            onTap: () {
-              _showVolumeUnitsInputPrompt(context);
-            },
-          ),
-          Divider(),
-          const AboutListTile(
-            icon: null,
-            aboutBoxChildren: <Widget>[
-              Text('Save water. Save the world. Free up time for other things.'
-                  '\n\nEvery minute, this app will announce how long you\'ve been'
-                  ' running the water, and how much water you\'ve used. Use this'
-                  ' as motivation for taking shorter showers and using less water.'),
-            ],
+          ListView(
+            children: <Widget>[
+              ListTile(
+                title: const Text('Volume per minute'),
+                subtitle: Text('$_volumePerMinute'),
+                onTap: () {
+                  _showVolumePerMinuteInputPrompt(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Volume units'),
+                subtitle: Text('$_volumeUnits'),
+                onTap: () {
+                  _showVolumeUnitsInputPrompt(context);
+                },
+              ),
+              Divider(),
+              const AboutListTile(
+                icon: null,
+                aboutBoxChildren: <Widget>[
+                  Text('Save water. Save the world. Free up time for other things.'
+                      '\n\nEvery minute, this app will announce how long you\'ve been'
+                      ' running the water, and how much water you\'ve used. Use this'
+                      ' as motivation for taking shorter showers and using less water.'),
+                ],
 //            title: const Text('About app'),
 //            onTap: _showAboutApp,
+              )
+            ],
+          ),
+          AnimatedBackground(
+            behaviour: RainParticleBehaviour(),
+            vsync: this,
+            child: Text('Hello'),
           )
         ],
-      ),
+      )
     );
   }
 
