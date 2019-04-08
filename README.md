@@ -7,6 +7,8 @@ Save water. Save the world. Free up time for other things.
 Every minute, this app will announce how long you've been running the water, and how much water you've used.
 Use this as motivation for taking shorter showers and using less water. 
 
+![Shower Smart Screenshot](screenshot-home-page.png)
+
 # Running
 This repo has two branches:
 - reduce-code-size: Code size capped at 5120 bytes of Dart code for the Flutter Create competition: https://flutter.dev/create
