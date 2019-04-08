@@ -29,6 +29,7 @@ Note: This app has only been tested on Android, though no platform-specific code
 - [x] The app silently judges you
 
 TODOv2:
+- [ ] Setting to turn off app silently judging you
 - [ ] Voice-activated stopping
 - [ ] History graph
   - [ ] Take off 30 (variable) seconds when pressing stop (gives time to dry hand)
